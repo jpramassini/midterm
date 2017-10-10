@@ -10,14 +10,15 @@ import java.util.Scanner;
 
 public class midterm {
 
-    static int dayCount = 0;
-    static String dayString = null;
+    static int dayStart = 0;
 
     public static void main (String args []){
 
+        int dayCount = 0;
         String dayInput = null;
-        int dayStart = 0;
         boolean valid = false;
+
+        String dayString = null;
 
         int results [][][] = new int [5][2][3];             //initializing main 3D array with fields for days, morning/afternoon, and reading number
 
@@ -107,7 +108,7 @@ public class midterm {
                             System.out.println("Please enter the temperature reading " + (k + 1) + " in degrees F for " + dayString + " " + morningOrAfternoon + " (Between -30 and 120): ");
                             tempInput = reader.nextLine();
                             temp = Integer.parseInt(tempInput);
-                            if(temp < 120 && temp > -30){
+                            if(temp <= 120 && temp >= -30){
                                 results[i][j][k] = temp;
                                 ok = true;
                             }
@@ -122,6 +123,8 @@ public class midterm {
                 }
             }
         }   //end of "loading for loops"
+        int celsiusArray [][][] = celsiusConverter(results);
+        tempCalc(results, celsiusArray);
     }   //end of main
     /*
     *****************************************************************************************************
@@ -129,14 +132,13 @@ public class midterm {
     * easily passed to other methods which take 3D arrays as args
     *****************************************************************************************************
     */
-
-    public static double [][][] celsiusConverter(double [][][] fahrenheitArray){
-        double [][][] celsiusArray = fahrenheitArray;
-
+    public static int [][][] celsiusConverter(int [][][]fahrenheitArray){
+        int [][][] celsiusArray = new int[5][2][3];
         for(int i = 0; i < celsiusArray.length; i++){
             for(int j = 0; j < celsiusArray[i].length; j++){
                 for(int k = 0; k < celsiusArray[i][j].length; k++){
-                    celsiusArray[i][j][k] = ((celsiusArray[i][j][k] - 32) * 0.5556);
+                    celsiusArray[i][j][k] = fahrenheitArray[i][j][k];
+                    celsiusArray[i][j][k] = (int) Math.round(((celsiusArray[i][j][k] - 32) * 0.5556));
                 }
             }
         }
@@ -145,9 +147,10 @@ public class midterm {
 
     /*
     *****************************************************************************************************
-    * This method takes arguments of two 3D arrays (one for Fahrenheit and one for Celsius) and takes an
-    * average of each morning and afternoon. While this code is designed for this particular application,
-    * it could easily be adapted to other uses.
+    * This method takes arguments of two 3D arrays (one for Fahrenheit and one for Celsius) and does
+    * all of the necessary calculations for the requirements. This includes logging the highest and
+    * lowest recorded temperatures for the period, recording morning and afternoon averages, and printing
+    * both Fahrenheit and Celsius averages.
     *****************************************************************************************************
      */
 
@@ -156,12 +159,12 @@ public class midterm {
         int highestSingle = tempFArray[0][0][0];
         int lowestSingle = tempFArray[0][0][0];
 
-        /* TODO Make these work. Currently the data will not be 100 percent accurate
-        *   In the event all of the users averages end up being above 0 or below 0, the program would
-        *   return 0 which is not correct.
-         */
-        double highestAvg;
-        double lowestAvg;
+        System.out.println(tempFArray[2][0][1] + " " + tempCArray[2][0][1]);
+
+        //initializing extremes of avgs as first average that will be calculated below. All other
+        //avgs will be compared to these.
+        double highestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
+        double lowestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
 
         int avgFSum = 0;
         int avgCSum = 0;
@@ -172,10 +175,52 @@ public class midterm {
 
         for(int i = 0; i < tempFArray.length; i++){                 // the loop controlling both arrays can be handled with the same number as
                                                                     // they are the same size and dimensions
-            System.out.println("Day :" + dayString);
+            String dayString = null;
+            int dayCount = dayStart;
+
+            switch (dayCount) {
+
+                case 1: case 8:
+                    dayString = "Sunday";
+                    break;
+
+                case 2: case 9:
+                    dayString = "Monday";
+                    break;
+
+                case 3: case 10:
+                    dayString = "Tuesday";
+                    break;
+
+                case 4: case 11:
+                    dayString = "Wednesday";
+                    break;
+
+                case 5: case 12:
+                    dayString = "Thursday";
+                    break;
+
+                case 6: case 13:
+                    dayString = "Friday";
+                    break;
+
+                case 7: case 14:
+                    dayString = "Saturday";
+                    break;
+
+            }
+            dayCount++;
+
+
+            System.out.println("Day: " + dayString);
 
             for(int j = 0; j < tempFArray[i].length; j++){
+                //TODO Add morning and afternoon switching
                 for(int k = 0; k < tempFArray[i][j].length; k++){
+                    avgFSum = 0;
+                    avgCSum = 0;
+                    avgF = 0;
+                    avgC = 0;
                     avgFSum += tempFArray[i][j][k];
                     avgCSum += tempCArray[i][j][k];
                     overallAvg += tempFArray[i][j][k];
@@ -187,13 +232,24 @@ public class midterm {
                         lowestSingle = tempFArray[i][j][k];
                     }
                 }
-                avgF = avgFSum / 3.0;
-                avgC = avgCSum / 3.0;
+                avgF = (int) Math.round(avgFSum / 3.0);
+                if(avgF > highestAvg){
+                    highestAvg = avgF;
+                }
+                if(avgF < lowestAvg){
+                    lowestAvg = avgF;
+                }
+
+                avgC = (int) Math.round(avgCSum / 3.0);
                 System.out.println(" Average - C: " + avgC + "°  Average - F: " + avgF + "°");
-                avgF = 0;
-                avgC = 0;
+
             }
         }
+        System.out.println("Highest Temperature of the Period: " + highestSingle + " °F");
+        System.out.println("Lowest Temperature of the Period: " + lowestSingle + " °F");
+        System.out.println("\nHighest Daily Average: " + highestAvg + " °F");
+        System.out.println("Lowest Daily Average: " + lowestAvg + " °F");
+        System.out.println("Average Temperature: " + (overallAvg / 30) + " °F");
     }
 
 
