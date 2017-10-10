@@ -235,7 +235,7 @@ public class midterm {
                         highestSingle = tempFArray[i][j][k];
                     }
 
-                    if (lowestSingle < tempFArray[i][j][k]){
+                    if (lowestSingle > tempFArray[i][j][k]){
                         lowestSingle = tempFArray[i][j][k];
                     }
                 }
@@ -255,7 +255,7 @@ public class midterm {
         System.out.println("Lowest Temperature of the Period: " + lowestSingle + " °F");
         System.out.println("\nHighest Daily Average: " + highestAvg + " °F");
         System.out.println("Lowest Daily Average: " + lowestAvg + " °F");
-        System.out.println("Average Temperature: " + (overallAvg / 30) + " °F");
+        System.out.println("Average Temperature: " + Math.round((overallAvg / 30)) + " °F");
     }
 
     public static void arrayPrint (int [][][] array){
