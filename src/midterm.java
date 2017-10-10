@@ -213,7 +213,6 @@ public class midterm {
             System.out.println("Day: " + dayString);
 
             for(int j = 0; j < tempFArray[i].length; j++){
-                //TODO Add morning and afternoon switching
 
                 switch (j){
 
