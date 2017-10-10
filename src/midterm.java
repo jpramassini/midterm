@@ -124,6 +124,7 @@ public class midterm {
             }
         }   //end of "loading for loops"
         int celsiusArray [][][] = celsiusConverter(results);
+        arrayPrint(results);
         tempCalc(results, celsiusArray);
     }   //end of main
     /*
@@ -159,18 +160,15 @@ public class midterm {
         int highestSingle = tempFArray[0][0][0];
         int lowestSingle = tempFArray[0][0][0];
 
-        System.out.println(tempFArray[2][0][1] + " " + tempCArray[2][0][1]);
-
         //initializing extremes of avgs as first average that will be calculated below. All other
         //avgs will be compared to these.
         double highestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
         double lowestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
 
-        int avgFSum = 0;
-        int avgCSum = 0;
-
-        double avgF = 0;
-        double avgC = 0;
+        //int avgFSum = 0;
+        //int avgCSum = 0;
+        int avgF = 0;
+        int avgC = 0;
         double overallAvg = 0;
 
         for(int i = 0; i < tempFArray.length; i++){                 // the loop controlling both arrays can be handled with the same number as
@@ -216,13 +214,12 @@ public class midterm {
 
             for(int j = 0; j < tempFArray[i].length; j++){
                 //TODO Add morning and afternoon switching
+                avgF = 0;
+                avgC = 0;
                 for(int k = 0; k < tempFArray[i][j].length; k++){
-                    avgFSum = 0;
-                    avgCSum = 0;
-                    avgF = 0;
-                    avgC = 0;
-                    avgFSum += tempFArray[i][j][k];
-                    avgCSum += tempCArray[i][j][k];
+
+                    avgF += tempFArray[i][j][k];
+                    avgC += tempCArray[i][j][k];
                     overallAvg += tempFArray[i][j][k];
                     if (highestSingle < tempFArray[i][j][k]) {
                         highestSingle = tempFArray[i][j][k];
@@ -232,15 +229,14 @@ public class midterm {
                         lowestSingle = tempFArray[i][j][k];
                     }
                 }
-                avgF = (int) Math.round(avgFSum / 3.0);
+                avgF = (int) Math.round(avgF / 3.0);
                 if(avgF > highestAvg){
                     highestAvg = avgF;
                 }
                 if(avgF < lowestAvg){
                     lowestAvg = avgF;
                 }
-
-                avgC = (int) Math.round(avgCSum / 3.0);
+                avgC = (int) Math.round(avgC / 3.0);
                 System.out.println(" Average - C: " + avgC + "°  Average - F: " + avgF + "°");
 
             }
@@ -252,7 +248,15 @@ public class midterm {
         System.out.println("Average Temperature: " + (overallAvg / 30) + " °F");
     }
 
-
+    public static void arrayPrint (int [][][] array){
+        for(int [][] array2d : array){
+            for(int[] array1D : array2d){
+                for(int item :array1D){
+                    System.out.println(item);
+                }
+            }
+        }
+    }
 
 
 
