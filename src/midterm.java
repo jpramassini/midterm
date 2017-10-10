@@ -124,7 +124,7 @@ public class midterm {
             }
         }   //end of "loading for loops"
         int celsiusArray [][][] = celsiusConverter(results);
-        arrayPrint(results);
+        System.out.println("");
         tempCalc(results, celsiusArray);
     }   //end of main
     /*
@@ -165,16 +165,16 @@ public class midterm {
         double highestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
         double lowestAvg = (tempFArray[0][0][0] + tempFArray[0][0][1] + tempFArray[0][0][2]) / 3;
 
-        //int avgFSum = 0;
-        //int avgCSum = 0;
+        int dayCount = dayStart;
         int avgF = 0;
         int avgC = 0;
         double overallAvg = 0;
 
+        String morningOrAfternoon = null;
+        String dayString = null;
+
         for(int i = 0; i < tempFArray.length; i++){                 // the loop controlling both arrays can be handled with the same number as
                                                                     // they are the same size and dimensions
-            String dayString = null;
-            int dayCount = dayStart;
 
             switch (dayCount) {
 
@@ -214,6 +214,16 @@ public class midterm {
 
             for(int j = 0; j < tempFArray[i].length; j++){
                 //TODO Add morning and afternoon switching
+
+                switch (j){
+
+                    case 0: morningOrAfternoon = "Morning";
+                            break;
+
+                    case 1: morningOrAfternoon = "Afternoon";
+                            break;
+
+                }
                 avgF = 0;
                 avgC = 0;
                 for(int k = 0; k < tempFArray[i][j].length; k++){
@@ -237,11 +247,11 @@ public class midterm {
                     lowestAvg = avgF;
                 }
                 avgC = (int) Math.round(avgC / 3.0);
-                System.out.println(" Average - C: " + avgC + "°  Average - F: " + avgF + "°");
+                System.out.println(morningOrAfternoon +" Average - C: " + avgC + "° " + morningOrAfternoon+ " Average - F: " + avgF + "°");
 
             }
         }
-        System.out.println("Highest Temperature of the Period: " + highestSingle + " °F");
+        System.out.println("\nHighest Temperature of the Period: " + highestSingle + " °F");
         System.out.println("Lowest Temperature of the Period: " + lowestSingle + " °F");
         System.out.println("\nHighest Daily Average: " + highestAvg + " °F");
         System.out.println("Lowest Daily Average: " + lowestAvg + " °F");
